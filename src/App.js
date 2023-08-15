@@ -1,23 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import { PredictAge } from './components/PredictAge';
+import { TaskHome } from './TaskHome';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Navbar } from './components/Navbar';
+import { Home } from './components/Home';
+import { CatFact } from './components/CatFact';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { SignUp } from './components/SignUp';
+
+
 
 function App() {
+
+  const client = new QueryClient({
+    defaultOptions:{
+      queries:{
+        refetchOnWindowFocus:false
+      }
+    }
+  })
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <QueryClientProvider client={client}>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cat-fact' element={<CatFact />} />
+            <Route path='/age-predictor' element={<PredictAge />} />
+            <Route path='/task-list' element={<TaskHome />} />
+            <Route path='/register' element={<SignUp />} />
+          </Routes>
+        </QueryClientProvider>
+      </Router>
     </div>
   );
 }
